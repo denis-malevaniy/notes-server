@@ -10,6 +10,6 @@ func main() {
 		fmt.Fprintln(w, "Hello, World!")
 	})
 
-	fmt.Println("Server started at http://localhost:8080")
+	fmt.Println("Server started at http://localhost:9000")
 	http.ListenAndServe(":9000", nil)
 }
