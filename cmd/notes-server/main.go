@@ -3,37 +3,37 @@ package main
 //заметки хранятся в ОП(потом заменить на БД)
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
-	"encoding/json"
 	"sync"
 )
 
 type Note struct {
-    ID      int    `json:"id"`
-    Title   string `json:"title"`
-    Content string `json:"content"`
+	ID      int    `json:"id"`
+	Title   string `json:"title"`
+	Content string `json:"content"`
 }
 
 var (
-	notes []Note
-	mu    sync.Mutex
+	notes  []Note
+	mu     sync.Mutex
 	nextID = 1
 )
 
-func addNote(title, content string){
+func addNote(title, content string) {
 	mu.Lock()
 	defer mu.Unlock()
 	note := Note{ID: nextID, Title: title, Content: content}
-	nextID++ 
+	nextID++
 	notes = append(notes, note)
 }
 
-func notesHandler (w http.ResponseWriter, r * http.Request){
+func notesHandler(w http.ResponseWriter, r *http.Request) {
 	mu.Lock()
 	defer mu.Unlock()
 	w.Header().Set("Content-Type", "application/json")
-	json,json.NewEncoder(w).Encode(notes)
+	json.NewEncoder(w).Encode(notes)
 }
 
 func main() {
